@@ -8,7 +8,9 @@
 # Libraries
 #
 ###########################################################################################################################
+library(methods)
 library(pbapply)
+library(Matrix)
 require(broom)
 
 ###########################################################################################################################
@@ -30,10 +32,7 @@ get.snp <- function(snp.id) {
   snp <- unlist(genotypes[snp.id,])
 
   #Refactor the genotypes to be consistent in all samples.
-  snp[snp == "C/T"] <- "T/C"
-  snp[snp == "C/G"] <- "G/C"
   snp[snp == "C/A"] <- "A/C"
-  snp[snp == "T/G"] <- "G/T"
   snp[snp == "T/A"] <- "A/T"
   snp[snp == "T/C"] <- "C/T"
   snp[snp == "G/A"] <- "A/G"
@@ -75,7 +74,7 @@ create.cor.matrix <- function(exp.matrices, eqtl.gene, cor.method = "spearman") 
   }
   # #Remove the target gene itself
   # cor.matrix <- cor.matrix[-which(rownames(cor.matrix) == eqtl.gene),]
-  print(table(apply(cor.matrix, 1, function(x){length(which(any(is.na(x))))})))
+  
   return(cor.matrix)
 }
 
@@ -258,31 +257,16 @@ do.interaction.analysis <- function(eqtl.data, exp.matrices, output.dir, cor.dir
 ##
 ## Read in data (change files).
 ##
-genes <- read.table("/Users/dylandevries/Documents/work/interactionAnalysis/calls/genes.tsv")
-genotypes <- read.table("/Users/dylandevries/Documents/work/interactionAnalysis/calls/maf_10.calls.txt", check.names = F)
-eqtl.data <- read.table("/Users/dylandevries/Documents/work/interactionAnalysis/calls/eQTLProbesFDR0.05-ProbeLevel.txt", stringsAsFactors = F, header = T)
+genes <- read.table("/groups/umcg-wijmenga/tmp03/projects/scRNAseq_10X_pilot/data/genes.tsv")
+genotypes <- read.table("/groups/umcg-bios/tmp03/projects/scRNA-seq/genotypes/maf_10.calls.txt", check.names = F)
+eqtl.data <- read.table("/groups/umcg-wijmenga/tmp03/projects/scRNAseq_10X_pilot/eqtl/th-cells.txt", stringsAsFactors = F, header = T)
 
 ##
 ## Read in the expression data.
 ##
-dir <- list.files(path="/Users/dylandevries/Documents/work/interactionAnalysis/expression_files/", pattern="*.tsv", full.names=T, recursive=FALSE)
 exp.matrices <- list()
 cell.counts <- c()
 sample.names <- vector()
-
-i <- 1
-for (file in dir) {
-  sample.names <- c(sample.names, tools::file_path_sans_ext(basename(file)))
-  sample <- read.csv(file = file, sep = "\t", row.names = 1)
-  rownames(sample) <- substr(rownames(sample), start = 7, stop = 21)
-  sample <- sample[apply(sample, 1, function(x){!any(x == 0)}),]
-  sample <- t(sample)
-  cell.counts <- c(cell.counts, nrow(sample))
-  
-  exp.matrices[[i]] <- sample
-  i <- i + 1
-}
-
 
 dir.path <- "/groups/umcg-wijmenga/tmp03/projects/scRNAseq_10X_pilot/data/expression/thCellsPerSample/"
 dir <- list.dirs(path=dir.path, full.names=T, recursive=FALSE)
@@ -301,12 +285,10 @@ for (folder in dir) {
   i <- i + 1
 }
 
-
-
 genotypes <- genotypes[,match(sample.names, colnames(genotypes))]
 
-cor.dir = "/Users/dylandevries/Documents/work/interactionAnalysis/permutedPerGene/correlationMatricesNew/"
-output.dir = "/Users/dylandevries/Documents/work/interactionAnalysis/permutedPerGene/"
+cor.dir = "/groups/umcg-wijmenga/tmp03/projects/scRNAseq_10X_pilot/interactionAnalysis/nonImputed/correlationMatrices/"
+output.dir = "/groups/umcg-wijmenga/tmp03/projects/scRNAseq_10X_pilot/interactionAnalysis/nonImputed/"
 
 if (!file.exists(paste0(output.dir, "/permutations"))){
     dir.create(paste0(output.dir, "/permutations"))
@@ -315,7 +297,7 @@ if (!file.exists(cor.dir)){
     dir.create(cor.dir)
 }
 
-create.cor.matrices(eqtl.data = eqtl.data, exp.matrices = exp.matrices, output.dir = cor.dir)
+#create.cor.matrices(eqtl.data = eqtl.data, exp.matrices = exp.matrices, output.dir = cor.dir)
 interaction.output <- do.interaction.analysis(eqtl.data = eqtl.data, exp.matrices = exp.matrices, output.dir = output.dir, cor.dir = cor.dir, permutations = T, n.perm=10)
 save(interaction.output, file=paste0(output.dir, "/interactionOutput.Rda"))
 
