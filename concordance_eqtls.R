@@ -16,11 +16,11 @@ library(Matrix.utils)
 #
 ###########################################################################################################################
 # BIOS eQTLs independent effects
-eqtls.rnaseq <- read.table("~/Documents/scRNA-seq/R/data/gene_level_eQTLs_independent_effects_interactions.txt", header = T, sep = "\t")
+eqtls.rnaseq <- read.table("data/gene_level_eQTLs_independent_effects_interactions.txt", header = T, sep = "\t")
 # DeepSAGE top eQTLS
 eqtls.deepsage <- read.table("data/DeepSAGE_eqtls.csv", sep = ";", header = T, dec = ",")
 # scRNA-seq eQTLs PBMCs (bulk like) confined to BIOS eQTLs
-eqtls.sc.rnaseq <- read.table("~/Documents/scRNA-seq/R/data/eQTLProbesFDR0.05-ProbeLevel_RNA-seq-all-cells.txt", header = T, sep = "\t")
+eqtls.sc.rnaseq <- read.table("data/eQTLProbesFDR0.05-ProbeLevel_RNA-seq-all-cells.txt", header = T, sep = "\t")
 # scRNA-seq eQTLs PBMCs (bulk like) confined to deepSAGE eQTLs
 eqtls.all.centered.deepsage <- read.table("data/eQTLProbesFDR0.05-ProbeLevel_DeepSAGE-all-cells.txt", header = T, sep = "\t")
 # scRNA-seq expression data (Seurat)
