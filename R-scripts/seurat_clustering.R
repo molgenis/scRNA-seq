@@ -72,11 +72,7 @@ add.data <- function(orig.data = NULL, lane) {
 #   ssn.res     Numeric         Resolution used for the SNN clustering
 # Output:
 #   The Seurat object
-DoClusterAnalysis <- function(seurat, pc.use=25, y.cutoff = 1, ssn.res = 1.2) {
-  seurat <- SubsetData(seurat, subset.name = "percent.mito", accept.high = 0.06)
-  seurat <- SubsetData(seurat, subset.name = "nGene", accept.high = 3500)
-  seurat <- SubsetData(seurat, subset.name = "llkDoublet.llkSinglet", accept.high = -2)
-  
+DoClusterAnalysis <- function(seurat, pc.use=16, y.cutoff = 1, ssn.res = 1.2) {
   seurat <- MeanVarPlot(seurat, x.low.cutoff = 0, y.cutoff = y.cutoff, do.plot = F)
   seurat <- RegressOut(seurat, genes.regress = seurat@var.genes, latent.vars = c("percent.mito", "nUMI"))
   seurat <- PCAFast(seurat, pc.genes = seurat@var.genes, pcs.compute = pc.use, do.print = F)
@@ -138,13 +134,13 @@ combined.seurat <- RunTSNE(combined.seurat, dims.use = 1:16, do.fast = T)
 
 combined.meta.data <- FetchData(combined.seurat, c("nUMI", "nGene", "percent.mito", "llkDoublet.llkSinglet", "lane"))
 true.doublet <- combined.meta.data$llkDoublet.llkSinglet > 0 & !combined.meta.data$lane %in% c(2,3)
-is.mito.cut <- combined.meta.data$percent.mito > 0.06
+is.mito.cut <- combined.meta.data$percent.mito > 0.05
 gene.high <- combined.meta.data$nGene > 3500
 gene.low <- combined.meta.data$nGene < 500
 
 qc.colors <- rep("Singlet", 28855)
 qc.colors[gene.high] <- ">3500 genes"
-qc.colors[is.mito.cut] <- ">6% mitochondrial"
+qc.colors[is.mito.cut] <- ">5% mitochondrial"
 qc.colors[true.doublet] <- "Doublet"
 qc.colors <- factor(qc.colors)
 qc.colors <- factor(qc.colors, levels(qc.colors)[c(4, 3, 2, 1)])
@@ -160,17 +156,20 @@ tsne.plot <- ggplot(combined.seurat@tsne.rot, aes(x=tSNE_1,y=tSNE_2, colour=qc.c
         legend.text=element_text(size=14),
         axis.line = element_line(size = 0.5)) +
   guides(colour = guide_legend(override.aes = list(size=8, alpha=1)))
+tsne.plot
 
 combined.seurat.subset <- SubsetData(combined.seurat, subset.name = "llkDoublet.llkSinglet", accept.high = -2)
+dim(combined.seurat.subset@data)
 
 combined.meta.data <- FetchData(combined.seurat.subset, c("nUMI", "nGene", "percent.mito", "llkDoublet.llkSinglet", "lane"))
 ggplot(combined.meta.data, aes(nUMI, percent.mito)) + geom_hex(bins=100) + 
   scale_fill_distiller(palette = "Spectral", name="Cell frequencies") + 
-  ylab("Fraction mitochondrial genes") + xlab("Number of reads") + 
+  ylab("Fraction mtDNA-encoded genes") + xlab("Number of reads") + 
   theme(axis.text=element_text(size=12), axis.title=element_text(size=18)) + 
   geom_hline(yintercept = 0.06, colour="red")
 
-combined.seurat.subset <- SubsetData(combined.seurat.subset, subset.name = "percent.mito", accept.high = 0.06)
+combined.seurat.subset <- SubsetData(combined.seurat.subset, subset.name = "percent.mito", accept.high = 0.05)
+dim(combined.seurat.subset@data)
 combined.meta.data <- FetchData(combined.seurat.subset, c("nUMI", "nGene", "percent.mito", "llkDoublet.llkSinglet", "lane"))
 # Gene / UMI hexagon plot
 ggplot(combined.meta.data, aes(nUMI, nGene)) + 
@@ -181,15 +180,15 @@ ggplot(combined.meta.data, aes(nUMI, nGene)) +
   geom_hline(yintercept = 3500, colour="red")
 
 combined.seurat.subset <- SubsetData(combined.seurat.subset, subset.name = "nGene", accept.high = 3500)
+dim(combined.seurat.subset@data)
+
 # Gene / UMI doublets colored
 plot(combined.meta.data$nGene~combined.meta.data$nUMI, 
      ylab = "Number of genes", xlab = "Number of reads", 
      col = ifelse(combined.meta.data$llkDoublet.llkSinglet > 100 & !combined.meta.data$lane %in% c(2,3) ,'red', rgb(0,0,0,0.1)),
      cex=0.2, cex.lab=1.4, pch=20)
 
-combined.seurat.subset <- FindClusters(combined.seurat.subset, pc.use = 1:16, resolution = 1.2, save.SNN = T, do.sparse = T)
-#combined.seurat.subset <- BuildClusterTree(combined.seurat.subset, do.reorder = T, reorder.numeric = T)
-combined.seurat.subset <- DoClusterAnalysis(combined.seurat.subset, pc.use = 16, y.cutoff = 1)
+combined.seurat.subset <- DoClusterAnalysis(combined.seurat.subset, pc.use = 16)
 combined.major <- combined.seurat.subset
 
 save(combined.major, file = "data/subsetted_celltypes.Rda")
