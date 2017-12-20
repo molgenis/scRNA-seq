@@ -1,7 +1,7 @@
 ###########################################################################################################################
 # Authors: Dylan de Vries
-# Name: interactionOtherCelltypes.R
-# Function: Calculate and plot all interactions for the non CD4+ cell types
+# Name: magic_plots.R
+# Function: Generates plots to determine the effect of MAGIC imputation on the gene expression in the CD4+ T cells.
 ###########################################################################################################################
 #
 # Libraries
@@ -42,21 +42,21 @@ magic.plot <- function(gene1, gene2, gene1.hgnc, gene2.hgnc){
 			nonImputed.exp.gene2 <- c(nonImputed.exp.gene2, exp.matrices.nonImputed[[i]][,gene2])
 		} else {
 			nonImputed.exp.gene2 <- c(nonImputed.exp.gene2, rep(0, nrow(exp.matrices.nonImputed[[i]])))
-		}		
+		}
 	}
-	plot.nonImputed <- ggplot() + 
+	plot.nonImputed <- ggplot() +
 		geom_point(aes(x=nonImputed.exp.gene1, y=nonImputed.exp.gene2)) +
 		theme_minimal(base_size = 64) +
 		theme(plot.title = element_text(hjust = 0.5)) +
 		labs(x = paste(gene1.hgnc, "expression"), y = paste(gene2.hgnc, "expression")) +
 		ggtitle(paste0("Correlation measured expression\n", gene1.hgnc, " vs. ", gene2.hgnc))
-	
 
-	plot.imputed <- ggplot() + 
+
+	plot.imputed <- ggplot() +
 		geom_point(aes(x=imputed.exp.gene1, y=imputed.exp.gene2)) +
 		theme_minimal(base_size = 64) +
 		theme(plot.title = element_text(hjust = 0.5)) +
-		labs(x = paste(gene1.hgnc, "expression"), 
+		labs(x = paste(gene1.hgnc, "expression"),
 			y = paste(gene2.hgnc, "expression")) +
 		ggtitle(paste0("Correlation imputed expression\n", gene1.hgnc, " vs. ", gene2.hgnc))
 
@@ -84,7 +84,7 @@ for (file in dir) {
   sample <- sample[apply(sample, 1, function(x){!any(x == 0)}),]
   sample <- t(sample)
   cell.counts <- c(cell.counts, nrow(sample))
-  
+
   exp.matrices[[i]] <- sample
   i <- i + 1
 }
@@ -145,6 +145,3 @@ dev.off()
 png("./plots/CD3D_CD14_imputed.png", width=1500, height=1500)
 print(plots.CD3D.CD14[[2]])
 dev.off()
-
-
-
