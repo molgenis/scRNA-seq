@@ -29,7 +29,6 @@ dend.expression <- read.table("data/pilot3_traitfile_ensembl_dend_scaled.tsv", h
 mono.expression <- read.table("data/pilot3_traitfile_ensembl_mono_scaled.tsv", header = T, sep="\t", check.names = F, row.names = 1)
 c.mono.expression <- read.table("data/pilot3_traitfile_ensembl_c_mono_scaled.tsv", header = T, sep="\t", check.names = F, row.names = 1)
 nc.mono.expression <- read.table("data/pilot3_traitfile_ensembl_nc_mono_scaled.tsv", header = T, sep="\t", check.names = F, row.names = 1)
-nc.mono.expression$`1_LLDeep_0775` = NA
 
 genotypes <- genotypes[,colnames(genotypes) %in% colnames(pbmc.expression)]
 genotypes <- genotypes[,match(colnames(pbmc.expression), colnames(genotypes))]
