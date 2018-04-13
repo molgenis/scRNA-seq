@@ -95,7 +95,7 @@ for (file in dir) {
 exp.matrices.nonImputed <- list()
 sample.names <- vector()
 
-dir.path <- "/Users/dylandevries/Documents/work/interactionAnalysis/nonImputed_expression_files/thCellsPerSample/"
+dir.path <- "./nonImputed_expression_files/thCellsPerSample/"
 dir <- list.dirs(path=dir.path, full.names=T, recursive=FALSE)
 
 i <- 1
