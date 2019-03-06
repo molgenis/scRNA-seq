@@ -1,6 +1,6 @@
 # scRNA-seq
 
-These scripts allow to process the scRNA-seq data, so that it can be used to identify eQTLs and co-expression QTLs.
+These scripts allow to process the scRNA-seq data, so that it can be used to identify eQTLs and co-expression QTLs. The website where you can download and request the data has changed to https://genenetwork.nl/scrna-seq/ and is no longer available from the link provided in the Nature Genetics paper. 
 
 ## DeAnonymizer
 
