@@ -1,0 +1,200 @@
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>scRNA-seq paper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet" media="screen"> -->
+
+  <script type='text/javascript'></script>
+  <script type='text/javascript' src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+
+  <script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+  <!-- <script type='text/javascript' src="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script> -->
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113103989-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-113103989-1');
+  </script>
+
+</head>
+<body style="background-color: white;">
+
+<div style="background-color: #fff; border-bottom: 1px solid lightgrey">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <a href="https://www.rug.nl/research/genetics/?lang=en" target="_blank">
+          <img src="img/umcg.png" class="img-responsive">
+        </a>
+      </div>
+      <div class="col-sm-6" style="margin-top: 15">
+        <a href="https://www.lifelines.nl/researcher/about-lifelines" target="_blank">
+          <img src="img/lifelines.svg" class="img-responsive pull-right" style="margin-right: 40;">
+        </a>
+      </div>
+    </div>
+
+    <h1>scRNA-seq cis-eQTLs and co-expression QTLs</h1>
+
+    <p class="lead">
+      This web page accompanies the manuscript titled <br/><strong>'<a target="_blank" href="http://dx.doi.org/10.1038/s41588-018-0089-9" target="_blank">Single-cell RNA sequencing identifies cell type-specific cis-eQTLs and co-expression QTLs.
+      </a>'</strong>, by <em>van der Wijst et al, published in Nature Genetics.</em></br>
+      For further questions, contact the corresponding author: <a href="mailto:lude@ludesign.nl">lude@ludesign.nl</a></br>
+    </p>
+  </div>
+  <br/>
+</div>
+
+<div class="container">
+  <br/>
+  <h3>Study</h3>
+
+  Single cell transcriptomics of PBMCs of 47 donors from the <strong>Lifelines Deep cohort</strong> (general population, Northern part of the Netherlands).
+  Cells of five or six different donors were pooled together in one sample pool, resulting in eight different sample pools. In total, <strong>28.855 cells</strong>
+  were captured and their transcriptomes were sequenced to an average depth of 74k. Genotype data is <a href="#data-access">available</a> for each donor, which allowed us to
+  use the <a target="_blank" href="https://github.com/statgen/demuxlet">Demuxlet method</a> that uses variable SNPs between the pooled individuals to determine which cell belongs to which individual. Since genotype
+  information is lacking of 2 individuals, the transcriptome of only <strong>45 individuals</strong> could be retrieved.
+
+  <br/><br/>
+  <div class="row">
+    <div class="col-xs-6">
+      <a href="figure-1.html">
+        <div class="thumbnail">
+          <img src="img/figure_1_tumb.png" class="img-responsive">
+          <div class="caption"><strong>Figure 1</strong> - cis-eQTL analysis in single-cell RNA-seq data.</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-6">
+      <a href="figure-2.html">
+        <div class="thumbnail">
+          <img src="img/figure_2_tumb.png" class="img-responsive">
+          <div class="caption"><strong>Figure 2</strong> - Most significant co-expression QTL in the CD4+ T cells.</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <br/>
+  <h3>Supplementary Data</h3>
+  <h4>Gene expression counts</h4>
+  <a target="_blank" href='https://molgenis26.gcc.rug.nl/downloads/scrna-seq/count_matrices_per_lane.zip'>Raw gene expression counts</a></br>
+  Raw gene expression counts per lane in Matrix Market Exchange format. Each line of this file contains the index and value for every entry in the matrix, whereby the rows represent the genes (stored in genes.tsv) and the columns the cell barcodes (stored in barcodes.tsv). The Cell Ranger output for each lane has been included in the Cell Ranger web summary.
+
+  <br/>
+  <h4>Demultiplexing</h4>
+  <a target="_blank" href='https://molgenis26.gcc.rug.nl/downloads/scrna-seq/cell_barcodes.zip'>Sample identification</a></br>
+  Cell barcodes for samples. This file can be used to link the barcodes to the correct sample. Each line contains a barcode. The first column contains the barcode, and the second column contains the sample identifier.
+
+  <h4>Cell type classification</h4>
+  <a target="_blank" href='https://downloads.molgeniscloud.org/downloads/scrna-seq/barcodes_to_cell_types.zip'>Cell type classification</a></br>
+  A two column tab separated file containing the cell barcodes (remained after QC) linked to their designated cell type.
+
+  </br>
+  <h4>eQTL analyses summary statistics</h4>
+  <a target="_blank" href='https://molgenis26.gcc.rug.nl/downloads/scrna-seq/scrna-seq_eqtls.zip'>Raw output files of the eQTL analyses</a></br>
+  The eQTL summary statistics for the eQTL analysis refined to previously reported top-eQTLs from whole blood deepSAGE (“restricted-eQTL-deepSAGE_PBMC”) and RNA-seq data (“restricted-eQTL-RNAseq_PBMC”) and the genome-wide eQTL analysis (“genome-wide-eQTL_cellType”). From left to right column:  Nominal P-value, SNP name, SNP chromosome number and position, assessed allele, Ensembl gene name, HGNC gene symbol, gene chromosome number and position of gene center, Spearman’s rank correlation, Z-score, FDR for each gene-SNP pair that was tested (each analyzed cell type is shown in a separate file).
+
+  </br>
+  <h4>MAGIC imputation</h4>
+  <a target="_blank" href='https://molgenis26.gcc.rug.nl/downloads/scrna-seq/expression_per_sample_cd4_t_imputed.zip'>Gene expression per donor after MAGIC imputation in the CD4+ T cells</a></br>
+  Gene expression count matrices per donor after MAGIC imputation in the CD4+ T cells. Filenames indicate the sample IDs, columns represent the cells and rows the genes.
+
+  </br>
+  <h4>co-expression QTL summary statistics</h4>
+  <a target="_blank" href='https://molgenis26.gcc.rug.nl/downloads/scrna-seq/scrna-seq_co-expression_qtls.zip'>co-expression QTL summary statistics</a></br>
+  The co-expression QTL summary statistics of all results (significant and non-significant) for the eQTL analysis restricted to the 145 genes that showed a cis-eQTL effect in the CD4+ T cells.
+  Interactions and correlations were only calculated for those genes that show variance in gene expression within the CD4+ T cells and are expressed in each of the 45 donors, i.e. 102 cis-eQTL
+  genes were compared to 7,975 genes.
+
+  <h3 id="data-access">Data access</h3>
+
+  <h4>Gene expression data (EGA) and Genotype data (LifeLines Workspace)</h4>
+  Genotype and gene expression data are freely available. <a target="_blank" href="https://archive.steve.ly/live/https://www.ebi.ac.uk/ega/studies/EGAS00001002560">Processed (deanonimyzed) single-cell RNA-seq data</a>,
+  including a text file that links each cell barcode to its respective donor, has been deposited at the European Genome-phenome Archive (EGA),
+  which is hosted by the EBI and the CRG, under accession number <a target="_blank" href="https://archive.steve.ly/live/https://www.ebi.ac.uk/ega/studies/EGAS00001002560">EGAS00001002560</a>.
+  Genotype data has been deposited in the LifeLines Workspace. The LLDEEP DAG2+ Data Access Committee (DAC) determines access permission.
+  In order to request data access, please click on request data and fill in the data request form with a signed data access agreement (please note: signature of PI required).<br/>
+  <a href="https://goo.gl/forms/VDvvfG9rwuSOXMpm2" target="_blank" class="btn btn-primary">Request data</a><br/>
+  <div style="color:lightgrey">
+    <em>
+      We aim to provide data access within 5 working days. However, during the holiday season there might be a slight delay.<br/>
+      For more information, contact Jackie Dekens
+      (<a href="mailto:j.a.m.dekens@umcg.nl">j.a.m.dekens@umcg.nl</a>).
+    </em>
+  </div>
+  <!-- <ul>
+    <li>
+      <a target="_blank" href='https://molgenis26.gcc.rug.nl/downloads/scrna-seq/20170811 Appl form acces Lifelines DEEP DAG2+ vs1 0.doc'>Data request</a><br/>
+    </li>
+    <li>
+      <a target="_blank" href='https://molgenis26.gcc.rug.nl/downloads/scrna-seq/20170811 LLDAG2+_DATA_ACCESS_AGREEMENT v1 0.docx'>Signed data access agreement</a><br/>
+    </li>
+  </ul> -->
+
+  <h3>Code availability <img src="img/github.png" height="50"><br/></h3>
+
+  <strong>External tools:</strong><br/>
+  <ul>
+    <li>
+      Seurat: <a target="_blank" href="https://github.com/satijalab/seurat">https://github.com/satijalab/seurat</a><br/>
+    </li>
+    <li>
+      Demuxlet: <a target="_blank" href="https://github.com/statgen/demuxlet">https://github.com/statgen/demuxlet</a><br/>
+    </li>
+    <li>
+      MAGIC: <a target="_blank" href="https://github.com/pkathail/magic">https://github.com/pkathail/magic</a><br/>
+    </li>
+  </ul>
+  <strong>In-house tools:</strong><br/>
+  <ul>
+    <li>
+      In-house eQTL pipeline: <a target="_blank" href="https://github.com/molgenis/systemsgenetics/tree/master/eqtl-mapping-pipeline">https://github.com/molgenis/systemsgenetics/tree/master/eqtl-mapping-pipeline</a><br/>
+    </li>
+    <li>
+      Custom code for analyses: <a target="_blank" href="https://github.com/molgenis/scRNA-seq">https://github.com/molgenis/scRNA-seq</a>
+    </li>
+  </ul>
+  <br/>
+
+  <!-- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfJxbMOH7xXy3LkUIpouZ-Ds5vnlDDxppJhJjpAV8EdhmxJEg/viewform?embedded=true" width="100%" height="1000" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe> -->
+
+  <h3>Funding</h3>
+  Morris Swertz and Lude Franke are supported by grants from the Dutch Research Council (ZonMW-VIDI 917.164.455 to M.S. and ZonMW-VIDI
+  917.14.374 to L.F.) and L.F. is supported by an ERC Starting Grant, grant agreement 637640 (ImmRisk). The Biobank-Based
+  Integrative Omics Studies (BIOS) Consortium is funded by BBMRI-NL, a research infrastructure financed by the Dutch government (NWO 184.021.007).
+  <div class="row">
+    <div class="col-xs-4">
+      <a href="https://erc.europa.eu/" target="_blank">
+        <img src="img/erc.png" class="img-responsive">
+      </a>
+    </div>
+    <div class="col-xs-4">
+      <a href="https://www.nwo.nl/" target="_blank">
+        <img class="img-responsive" src="img/nwo.jpg">
+      </a>
+    </div>
+  </div>
+
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <!--<h2>How to cite</h2>
+  If you use the QTLs present on this website in your paper or research, please cite our work:
+  <a href="">Download citation directly from Nature Genetics</a>
+  -->
+</div>
+
+</body>
+</html>
+
